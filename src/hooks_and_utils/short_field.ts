@@ -1,7 +1,7 @@
 
 
 const shortField = (value: string): string =>
-    value.length > 20 ? value.slice(0, 20) + '...' : value;
+    value.length > 100 ? value.slice(0, 100) + '...' : value;
 
 
 export default shortField;

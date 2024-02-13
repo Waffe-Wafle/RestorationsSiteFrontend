@@ -1,20 +1,20 @@
 import {useEffect, useState} from "react";
 import Cookies from "js-cookie";
+import axios from "axios";
+import {getErrorWithChangetText} from "./errorMapper";
 
 
-const useFetch = (url, options = {}, callback = null, useMultipart=false) => {
+const useFetch = (url, options = {}, callback = null) => {
     const [data, setData] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [reFetch, setReFetch] = useState(0)
+    const [reFetch, setReFetch] = useState(0);
 
     const doFetch = () => setReFetch(prev => prev + 1)
 
     const default_options = {
         method: 'POST',
-        // withCredentials: true,
-        credentials: 'include',
-        redirect: 'follow',
+        withCredentials: true,
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
             'X-CSRFToken': Cookies.get('csrftoken')
@@ -24,44 +24,31 @@ const useFetch = (url, options = {}, callback = null, useMultipart=false) => {
     useEffect(() => {
         const fetchData = async () => {
             let response;
-            let text;
+            let _data;
             try {
                 setError(null);
                 setLoading(true);
 
-                const body = options.body ? (useMultipart ? options.body : JSON.stringify(options.body)) : undefined;
-                response = await fetch(url,
+                const body = options.data ? options.data : undefined;
+                response = await axios(url,
                     {...default_options, ...options, body});
 
-                text = await response.text()
-                const _data =  text ? JSON.parse(text) : {}
+                _data =  response.data ? response.data : {}
                 setData(_data);
 
-                if (response.ok) {
+                if (response.status >= 200  && response.status < 300 ) {
                     if (callback !== null) callback(_data);
                     console.log('Response successful:', url, _data);
-                } else {
-                    const err = {code: response.status, status: response.statusText}
-                    setError(err);
-                    console.log('Response unsuccessful:', url, err);
                 }
+                setLoading(false);
             } catch (_error) {
-                setData({}); // important
-                if (_error instanceof TypeError && _error.message === 'Failed to fetch') {
-                    setError({code: 500, status: 'Сервер недоступен... Отображены mock-объекты'});
-                    console.log('Server is not available');
-
-                } else if (_error instanceof SyntaxError) {
-                    console.log(text)
-                    if (text.includes('Error occurred while trying to proxy') ||
-                        text.includes("There isn't a GitHub Pages site here"))
-                        setError({code: 500, status: 'Сервер недоступен... Отображены mock-объекты'});
-                    else
-                        setError({code: 500, status: 'Ошибка разбора JSON...'});
-                    console.log('JSON parsing error');
-
+                setData({})
+                if (axios.isAxiosError(_error)) {
+                    setError(getErrorWithChangetText(_error));
+                    // setError(_error);
+                    console.log('Response unsuccessful:', url, _error);
                 } else {
-                    setError({code: -1, status: 'Веб приложение сломалось..'});
+                    setError({response: {status: -1, statusText: 'Веб приложение сломалось..'}});
                     console.log(_error);
                 }
             } finally { setLoading(false); }

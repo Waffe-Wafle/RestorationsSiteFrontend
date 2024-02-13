@@ -1,23 +1,9 @@
-interface Restoration {
-    id: number;
-    name: string;
-    image: string | null;
-    description: string;
-    given_sum: number;
-    total_sum: number
-    works?: {
-        id: number;
-        name: string;
-        given_sum: number;
-        total_sum: number;
-        percent: number;
-    }[];
-}
+import {RestorationType} from "../interfaces";
 
 
-const catalogFilter = (softList: Restoration[], search: string) => {
+const catalogFilter = (softList: RestorationType[], search: string) => {
     search = search.toLowerCase();
-    let filtered: Restoration[] = [...softList].filter((elem) =>
+    let filtered: RestorationType[] = [...softList].filter((elem) =>
         elem.name.toLowerCase().includes(search) ||
         elem.description.toLowerCase().includes(search) ||
         elem.total_sum.toString() === search ||

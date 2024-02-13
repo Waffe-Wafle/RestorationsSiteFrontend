@@ -8,7 +8,7 @@ export interface WorkType {
     status: "NotStarted" | "InProcess" | "Completed"
 }
 
-export interface DonationType {
+export interface RestorationDonationType {
     id: number;
     name: string;
     works: {
@@ -30,9 +30,19 @@ export interface RestorationType {
     image: string | null;
     description: string;
     given_sum: number;
-    total_sum: number
+    total_sum: number;
     works?: WorkType[];
-    donaters?: DonationType[]
+    donaters?: RestorationDonationType[]
+}
+
+export interface DonationType {
+    work_id: number;
+    restore_id: number;
+    restore_name: string;
+    work: string;
+    given_sum: number;
+    total_sum: number;
+    percent: number;
 }
 
 
@@ -42,10 +52,19 @@ export interface PaymentType {
     manager: number;
 
     code: string;
+    given_sum: number;
+
     status: string;
     date_open: string;
     date_close: string;
-    fate_pay: string;
+    date_pay: string;
 
-    donations: DonationType[];
+    donations: DonationType[] | number[];
+}
+
+
+export interface RegroupedDonation {
+    restore_id: number;
+    restore_name: string;
+    worksDonations: DonationType[]
 }

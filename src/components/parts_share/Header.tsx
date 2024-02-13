@@ -1,13 +1,31 @@
 import React, {FC, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {useLocation, useNavigate} from 'react-router-dom';
+import {
+    useIsAuthenticated,
+    useSearchValue,
+    storeSearchValue,
+} from '../../redux/dataSlice';
+import useLogout from "../../hooks_and_utils/useLogout";
 
 
 interface HeaderProps {
-    doSearch?: (query: string) => void;
+    doSearch?: Function;
+    authView?: boolean;
 }
 
-const Header:FC <HeaderProps> = ({doSearch}) => {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(false);
-    const [search, setSearch] = useState('');
+
+const Header: FC<HeaderProps> = ({doSearch, authView = false}) => {
+    const isAuthenticated = useIsAuthenticated();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = useLogout();
+
+    const search = useSearchValue();
+
+    const searchValueChanged = e =>
+        dispatch(storeSearchValue(e.target.value));
 
     return (
         <nav
@@ -20,9 +38,10 @@ const Header:FC <HeaderProps> = ({doSearch}) => {
             {/* Поиск */}
             <div className="form-inline flex-nowrap">
                 <input className="form-control search" value={search} placeholder="Search..."
-                       onChange={e => setSearch(e.target.value)}/>
+                       onChange={searchValueChanged}/>
                 <button className="btn btn-outline-light search-button ml-2 mr-2"
-                        onClick={() => doSearch(search)}>Search</button>
+                        onClick={() => doSearch ? doSearch() : ''}>Search
+                </button>
             </div>
 
             {/* Hamburger Menu */}
@@ -32,71 +51,36 @@ const Header:FC <HeaderProps> = ({doSearch}) => {
             </button>
             <div id="navbarSupportedContent" className="navbar-collapse text-right collapse">
                 <div className="btn-group ml-auto hamburger-hidden">
-                    <a className="btn btn-outline-light hamburger-first"
-                       href="#/info">Главная</a>
                     <a className="btn btn-outline-light"
+                       href="#/info">Главная</a>
+                    <a className={"btn btn-outline-light"}
                        href="#/catalog">Каталог</a>
-                    <div className="btn-group">
-                        <button type="button" data-toggle="dropdown"
-                                className="btn btn-light dropdown-toggle hamburger-last">Профиль</button>
-                        <div className="dropdown-menu">
-                            {isAuthenticated && <>
-                                <button className="dropdown-item">Корзина</button>
-                                <button className="dropdown-item">Заказы</button>
-                            </>}
-                            <button onClick={() => setIsAuthenticated(!isAuthenticated)} className="dropdown-item">
-                                {isAuthenticated ? 'Выход' : 'Вход'}
+                    {authView ? '' :
+                        <div className="btn-group">
+                            <button type="button" data-toggle="dropdown"
+                                    className="btn btn-light dropdown-toggle">Профиль
                             </button>
+                            <div className="dropdown-menu dropdown-menu-right dropdown-menu-end">
+                                {isAuthenticated && <>
+                                    <button onClick={() => navigate('/basket')}
+                                            className="dropdown-item">Корзина
+                                    </button>
+                                    <button onClick={() => navigate('/my_payments')}
+                                            className="dropdown-item">Заказы
+                                    </button>
+                                </>}
+                                <button onClick={() => isAuthenticated ? handleLogout() : navigate('/login')}
+                                        className="dropdown-item">
+                                    {isAuthenticated ? 'Выход' : 'Вход'}
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
         </nav>
     );
 };
 
+
 export default Header;
-
-
-//
-// console.log(document.cookie)
-// const options = {
-//     method: 'POST',
-//     withCredentials: true,
-//     credentials: 'include',
-//
-//     headers: {
-//         'Content-Type': 'application/json',
-//         'X-CSRFToken': Cookies.get('csrftoken')
-//     },
-// };
-//
-//
-//
-//
-// fetch(`http://127.0.0.1:8000/profiles_api/v1/logout/`, options)
-//     .then(data => {
-//         if (data.ok) {
-//
-//             localStorage.clear();
-//             console.log('Successfully logged out');
-//             navigate('/catalog');
-//         }
-//     })
-//     .catch(err => console.error(err));
-
-
-//
-//
-// ProfilesAPI.post('logout/', {})
-//     .then(response => {
-//         dispatch(setIsAuthenticatedAction(false));
-//         dispatch(setIsStaffAction(false));
-//         dispatch(delSumAction());
-//         dispatch(delDrawAction());
-//         dispatch(delPaymentSoftAction());
-//         localStorage.clear();
-//         console.log('Successfully logged out');
-//         navigate('/catalog');
-//     })
-//     .catch(error => console.error('Not logged out error:', error));

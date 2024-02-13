@@ -6,29 +6,21 @@ import Spinner from "react-bootstrap/Spinner";
 
 interface LoadingPopUpProps {
     show: boolean;
-    error?: { status: number };
+    error?: any;
     message?: string;
     onClose: () => void;
 }
 
 
-const LoadingPopUp: FC <LoadingPopUpProps> = memo(
-    ({ show, error, message, onClose }) => {
-        useEffect(() => {
-            document.addEventListener('click', onClose);
-            return () => {
-                document.removeEventListener('click', onClose);
-            };
-        }, []);
-
+const LoadingPopUp: FC <LoadingPopUpProps> = memo(({ show, error, message, onClose }) => {
         return (
-            <Modal show={show} centered>
+            <Modal show={show} centered onHide={onClose}>
                 <Modal.Body className="text-center">
                     {error ? (
                         <>
                             <Title text={'Error'} is_error={true} />
                             <div className="mt-3 text-danger">
-                                Произошла ошибка: {error.status}
+                                Произошла ошибка: {error.response.statusText}
                             </div>
                         </>
                     ) : (
@@ -52,5 +44,6 @@ const LoadingPopUp: FC <LoadingPopUpProps> = memo(
         );
     }
 );
+
 
 export default LoadingPopUp;

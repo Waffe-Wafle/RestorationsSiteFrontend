@@ -55,6 +55,12 @@
   width: 100%;
 }
 
+.card_href, .card_href:hover  {
+  text-decoration: none;
+  color: black;
+  outline: none;
+}
+
 .main-color {
   background-color: #7749F8 !important;
 }
@@ -106,14 +112,22 @@
   .hamburger-last {
     border-top-right-radius: 0px;
     border-bottom-left-radius: 2px !important;
-    border-bottom-right-radius: 2px;
+    border-bottom-right-radius: 2px !important;
   }
 }
 
-.form-control:focus {
-  color: #495057;
-  background-color: #fff;
-  border-color: #fff;
-  outline: 0;
-  box-shadow: 0 0 0 .2rem rgba(255, 255, 255, 0.25);
+//.form-control:focus {
+//  color: #495057;
+//  background-color: #fff;
+//  border-color: #fff;
+//  outline: 0;
+//  box-shadow: 0 0 0 .2rem rgba(255, 255, 255, 0.25);
+//}
+
+.inputField > input{
+  width: 200px;
+  margin-right: 12px;
+  border: 2px solid black;
+  border-radius: 4px;
+  outline: deepskyblue;
 }

@@ -4,7 +4,7 @@ const MOCK = {
         {
             "id": 1,
             "name": "Старый замок",
-            "image": "http://example.com/old_castle.jpg",
+            "image": "https://s11.stc.yc.kpcdn.net/share/i/12/11913957/wr-960.webp",
             "description": "Реставрация старинного замка в средневековом стиле",
             "given_sum": 50000,
             "total_sum": 100000,
@@ -44,7 +44,7 @@ const MOCK = {
         {
             "id": 2,
             "name": "Исторический музей",
-            "image": "http://example.com/historical_museum.jpg",
+            "image": "https://www.gctm.ru/wp-content/uploads/2022/08/rabota-po-raschistke-sten-granenoj-stolovoj.jpeg",
             "description": "Реставрация исторического музея с уникальными экспонатами",
             "given_sum": 75000,
             "total_sum": 200000,
@@ -69,7 +69,7 @@ const MOCK = {
         {
             "id": 3,
             "name": "Древняя церковь",
-            "image": "http://example.com/ancient_church.jpg",
+            "image": "https://edinvera.ru/wp-content/uploads/2022/10/cgpgemiajvo-2048x1536.jpg",
             "description": "Реставрация древней церкви с фресками",
             "given_sum": 100000,
             "total_sum": 500000,
@@ -80,6 +80,12 @@ const MOCK = {
                         {
                             "work_id": 1,
                             "work": "Реставрация фресок",
+                            "given_sum": 50000,
+                            "percent": 50
+                        },
+                        {
+                            "work_id": 2,
+                            "work": "Реставрация иконостаса",
                             "given_sum": 50000,
                             "percent": 50
                         }
@@ -130,7 +136,7 @@ const MOCK = {
         {
             "id": 4,
             "name": "Памятник в парке",
-            "image": "http://example.com/park_monument.jpg",
+            "image": "https://static.mk.ru/upload/entities/2023/07/21/19/articles/facebookPicture/57/a4/83/77/9b222af75b557f2b6d7ccad106ddba4a.jpg",
             "description": "Реставрация памятника в городском парке",
             "given_sum": 0,
             "total_sum": 150000,
@@ -155,7 +161,7 @@ const MOCK = {
         {
             "id": 5,
             "name": "Подземный город",
-            "image": "http://example.com/underground_city.jpg",
+            "image": "http://geostroy.1gb.ru/images/2017/museum/museum_4.jpg",
             "description": "Реставрация подземного города с катакомбами",
             "given_sum": 25000,
             "total_sum": 200000,

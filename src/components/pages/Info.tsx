@@ -1,10 +1,22 @@
 import React, { FC, useState } from "react";
-import { Link } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Header from "../parts_share/Header";
 import CurrentPath from "../parts/CurrentPath";
+import {useIsAuthenticated} from "../../redux/dataSlice";
+import useLogout from "../../hooks_and_utils/useLogout";
+
+
 
 const Info: FC = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(false);
+    const isAuthenticated = useIsAuthenticated();
+    const navigate = useNavigate();
+
+    const handleLogout = useLogout();
+
+    const handleAuth = () => {
+        if (isAuthenticated) handleLogout();
+        else navigate("/login")
+    };
 
     return (
         <div className="wrapper clear">
@@ -23,12 +35,16 @@ const Info: FC = () => {
                             <div className="d-flex flex-column align-items-center">
                                 <a className="btn btn-primary btn-block mb-3"
                                    href="#/catalog">Каталог</a>
-                                <button className="btn btn-primary btn-block mb-3" onClick={() => setIsAuthenticated(!isAuthenticated)}>
+                                <button className="btn btn-primary btn-block mb-3" onClick={handleAuth}>
                                     {isAuthenticated ? 'Выйти' : 'Авторизоваться'}
                                 </button>
                                 {isAuthenticated && <>
-                                    <a className="btn btn-primary btn-block mb-3">Черновик заявки</a>
-                                    <a className="btn btn-primary btn-block">История заявок</a>
+                                    <button onClick={() => navigate('/basket')}
+                                            className="btn btn-primary btn-block mb-3">Черновик заявки
+                                    </button>
+                                    <button onClick={() => navigate('/my_payments')}
+                                            className="btn btn-primary btn-block">История заявок
+                                    </button>
                                 </>}
                             </div>
                         </div>
@@ -38,5 +54,6 @@ const Info: FC = () => {
         </div>
     );
 }
+
 
 export default Info;
