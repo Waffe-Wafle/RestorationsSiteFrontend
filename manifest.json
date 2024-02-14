@@ -1,0 +1,10 @@
+{
+  "name": "Soft Shop",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml", "sizes": ["512x512"]
+    }
+  ]
+}
