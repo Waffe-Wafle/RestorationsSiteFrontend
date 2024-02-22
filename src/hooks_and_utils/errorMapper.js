@@ -2,9 +2,16 @@ const errorMap = {
     400: {
         "This work already got enough donations..": "на эту работу уже забронировано достаточно заявок...",
         "you cant change status now": "теперь этот стутус сменить нельзя..",
+        default: "произведен запрос с некорректными данными"
     },
     3: {
+        default: "вероятно, учетные данные не были предоставлены..."
+    },
+    403: {
         default: "доступ запрещен..."
+    },
+    404: {
+        default: "ресурс не найден..."
     },
     5: {
         default: "произошла ошибка на сервере..."
@@ -12,10 +19,13 @@ const errorMap = {
     504: {
         default: "сервер не доступен.."
     },
-    default: "Произошла ошибка"
+    503: {
+        default: "сервер не доступен.."
+    },
+    default: "произошла ошибка"
 };
 
-export const getErrorWithChangetText = error => {
+export const getErrorWithChangedText = error => {
     const errRaiser = (value, message) => {
         if (value) throw new Error(message);
     };

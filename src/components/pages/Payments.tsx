@@ -53,13 +53,13 @@ const Payments: FC = ({fetchBrake = false, pollingBrake=false}) => {
         data => dispatch(storePayments(data))
     );
 
-    // useEffect(() => {
-    //     const intervalId = setInterval(() => {
-    //         if(!fetchBrake && !pollingBrake) pollingDoFetch();
-    //     }, 200); // Poll every 1 second
-    //
-    //     return () => clearInterval(intervalId); // Cleanup on component unmount
-    // }, [doFetch, fetchBrake, pollingBrake]);
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            if(!fetchBrake && !pollingBrake) pollingDoFetch();
+        }, 200); // Poll every 1 second
+
+        return () => clearInterval(intervalId); // Cleanup on component unmount
+    }, [doFetch, fetchBrake, pollingBrake]);
 
     // Del logic:
     const handleDel = (id: number) => {

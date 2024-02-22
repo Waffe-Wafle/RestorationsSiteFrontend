@@ -2,13 +2,15 @@ import React, { FC, useState } from "react";
 import {useNavigate} from "react-router-dom";
 import Header from "../parts_share/Header";
 import CurrentPath from "../parts/CurrentPath";
-import {useIsAuthenticated} from "../../redux/dataSlice";
+import {useIsAuthenticated, useIsStaff} from "../../redux/dataSlice";
 import useLogout from "../../hooks_and_utils/useLogout";
 
 
 
 const Info: FC = () => {
     const isAuthenticated = useIsAuthenticated();
+    const isStaff = useIsStaff();
+
     const navigate = useNavigate();
 
     const handleLogout = useLogout();
@@ -38,14 +40,23 @@ const Info: FC = () => {
                                 <button className="btn btn-primary btn-block mb-3" onClick={handleAuth}>
                                     {isAuthenticated ? 'Выйти' : 'Авторизоваться'}
                                 </button>
-                                {isAuthenticated && <>
-                                    <button onClick={() => navigate('/basket')}
-                                            className="btn btn-primary btn-block mb-3">Черновик заявки
-                                    </button>
-                                    <button onClick={() => navigate('/my_payments')}
-                                            className="btn btn-primary btn-block">История заявок
-                                    </button>
-                                </>}
+                                {isAuthenticated && (
+                                    isStaff ? <>
+                                        <button onClick={() => navigate('/manage')}
+                                                className="btn btn-primary btn-block mb-3">Менеджмент заявок
+                                        </button>
+                                        <button onClick={() => navigate('/new_restoration')}
+                                                className="btn btn-primary btn-block">Добавить реставарцию
+                                        </button>
+                                    </> : <>
+                                        <button onClick={() => navigate('/basket')}
+                                                className="btn btn-primary btn-block mb-3">Черновик заявки
+                                        </button>
+                                        <button onClick={() => navigate('/my_payments')}
+                                                className="btn btn-primary btn-block">История заявок
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

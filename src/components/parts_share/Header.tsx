@@ -4,7 +4,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {
     useIsAuthenticated,
     useSearchValue,
-    storeSearchValue,
+    storeSearchValue, useIsStaff,
 } from '../../redux/dataSlice';
 import useLogout from "../../hooks_and_utils/useLogout";
 
@@ -17,6 +17,8 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({doSearch, authView = false}) => {
     const isAuthenticated = useIsAuthenticated();
+    const isStaff = useIsStaff();
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -60,15 +62,24 @@ const Header: FC<HeaderProps> = ({doSearch, authView = false}) => {
                             <button type="button" data-toggle="dropdown"
                                     className="btn btn-light dropdown-toggle">Профиль
                             </button>
-                            <div className="dropdown-menu">
-                                {isAuthenticated && <>
-                                    <button onClick={() => navigate('/basket')}
-                                            className="dropdown-item">Корзина
-                                    </button>
-                                    <button onClick={() => navigate('/my_payments')}
-                                            className="dropdown-item">Заказы
-                                    </button>
-                                </>}
+                            <div className="dropdown-menu dropdown-menu-right dropdown-menu-end">
+                                {isAuthenticated && (
+                                    isStaff ? <>
+                                        <button onClick={() => navigate('/manage')}
+                                                className="dropdown-item">Заявки
+                                        </button>
+                                        <button onClick={() => navigate('/new_restoration')}
+                                                className="dropdown-item">Новая реставрация
+                                        </button>
+                                    </> : <>
+                                        <button onClick={() => navigate('/basket')}
+                                                className="dropdown-item">Корзина
+                                        </button>
+                                        <button onClick={() => navigate('/my_payments')}
+                                                className="dropdown-item">Заказы
+                                        </button>
+                                    </>
+                                )}
                                 <button onClick={() => isAuthenticated ? handleLogout() : navigate('/login')}
                                         className="dropdown-item">
                                     {isAuthenticated ? 'Выход' : 'Вход'}

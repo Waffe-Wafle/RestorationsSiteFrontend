@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
-import {getErrorWithChangetText} from "./errorMapper";
+import {getErrorWithChangedText} from "./errorMapper";
 
 
 const useFetch = (url, options = {}, callback = null) => {
@@ -44,8 +44,7 @@ const useFetch = (url, options = {}, callback = null) => {
             } catch (_error) {
                 setData({})
                 if (axios.isAxiosError(_error)) {
-                    setError(getErrorWithChangetText(_error));
-                    // setError(_error);
+                    setError(getErrorWithChangedText(_error));
                     console.log('Response unsuccessful:', url, _error);
                 } else {
                     setError({response: {status: -1, statusText: 'Веб приложение сломалось..'}});
@@ -55,7 +54,6 @@ const useFetch = (url, options = {}, callback = null) => {
         };
         if (reFetch) fetchData();
     }, [reFetch]);
-
     return {data, loading, error, doFetch};
 };
 

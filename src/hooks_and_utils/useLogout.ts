@@ -8,7 +8,7 @@ import {
     storeIsStaff,
     storeBasket,
     storePayments,
-    storeDraftId,
+    storeDraftId, storeRefreshView, storeRestorations,
 } from "../redux/dataSlice";
 
 
@@ -30,10 +30,13 @@ const useLogout = () => {
         dispatch(storeBasket({}));
         dispatch(storeDraftId(null));
         dispatch(storeSearchValue(''));
-
-        if (['#/basket', '#/my_payments', '#/update_restore', '#/manage'].includes(window.location.hash))
-            navigate('/');
+        dispatch(storeRestorations({}));// To reload cards which are invisible for usual users
         localStorage.clear();
+        dispatch(storeRefreshView(false));
+        dispatch(storeRefreshView(true));
+
+        if (['#/basket', '#/my_payments', '#/update_restore', '#/manage', '#/catalog'].includes(window.location.hash))
+            navigate('/info');
     };
 
     return handleLogout;

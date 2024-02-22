@@ -45,7 +45,9 @@ const Login: React.FC = () => {
     };
 
     useEffect(() => {
-        let wrongCred = error && error.response.data.detail === 'authentication failed';
+        let wrongCred = error?.response?.data?.detail === 'authentication failed';
+        console.log(error?.response?.data?.detail)
+        console.log(wrongCred)
         if (wrongCred) {
             setLoadingShown(false);
             setMessageShown(true);
@@ -73,7 +75,7 @@ const Login: React.FC = () => {
 
             <Header authView={true}/>
             <div className="d-flex justify-content-center">
-                <div className="content  m-3 col-10 col-sm-9 col-md-8 col-lg-7 col-xl-5 ">
+                <div className="content m-3 col-10 col-sm-9 col-md-8 col-lg-7 col-xl-5">
                     <h1 className="text-center mb-4">Вход</h1>
                     <form>
                         <div className="form-group">

@@ -7,7 +7,12 @@ import RestorationDonation from "../parts/RestorationDonation";
 import CurrentPath from "../parts/CurrentPath";
 import useFetch from "../../hooks_and_utils/useFetch";
 import {RestoreAPI} from "../../api.js";
-import {storeBasket, useIsAuthenticated,} from "../../redux/dataSlice";
+import {
+    useIsAuthenticated,
+    useIsStaff,
+    useCurrentRestoration,
+    storeBasket, storeCurrentRestoration,
+} from "../../redux/dataSlice";
 import imgPlaceholder from "../../hooks_and_utils/imgPlaceholder";
 import percent from "../../hooks_and_utils/countPercent";
 import displayInt from "../../hooks_and_utils/displayInt";
@@ -21,7 +26,9 @@ import ConfirmationPopUp from "../popups/ConfirmationPopUp";
 const Restoration: FC = () => {
     const {restore_id} = useParams();
     const restoreId = parseInt(restore_id, 10);
+
     const isAuthenticated = useIsAuthenticated();
+    const isStaff = useIsStaff();
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -29,7 +36,8 @@ const Restoration: FC = () => {
     const [isAddDonationRequest, setIsAddDonationRequest] = useState<boolean>(false);
     const [donationProcessed, setDonationProcessed] = useState<DonationType>({} as DonationType);
     const [confirmMessageText, setConfirmMessageText] = useState<string>('');
-    const [restoration, setRestoration] = useState<RestorationType | any>({});
+    const restoration = useCurrentRestoration() as RestorationType;
+    // const [restoration, setRestoration] = useState<RestorationType | any>({});
 
     const [inputValueShown, setInputValueShown] = useState<boolean>(false);
     const [messageInMessagePopUp, setMessageInMessagePopUp] = useState<string>(''); // Used in message popup which is
@@ -42,7 +50,7 @@ const Restoration: FC = () => {
     const callback = data => {
         setLoaded(true);
         if (isAddDonationRequest) dispatch(storeBasket(data));
-        else setRestoration(data);
+        else dispatch(storeCurrentRestoration(data));
         setIsAddDonationRequest(false); // If there won't be unmounting later
         setLoadingShown(false);
     };
@@ -151,8 +159,16 @@ const Restoration: FC = () => {
                                 &nbsp;
                                 {displayInt(restoration.given_sum)} / {displayInt(restoration.total_sum)} ₽
                                 <div>
-                                    <Link className="btn btn-success" to="/basket">В заявку</Link>
-                                    <Link className="btn btn-success ml-2" to="/my_payments">В историю</Link>
+                                    {isStaff ?
+                                        <Link className="btn btn-success"
+                                              to={"/update_restoration/" + restoreId}>Редактировать</Link> :
+                                        <>
+                                        {isAuthenticated && <>
+                                                <Link className="btn btn-success" to="/basket">В заявку</Link>
+                                                <Link className="btn btn-success ml-2" to="/my_payments">В историю</Link>
+                                            </>}
+                                        </>
+                                    }
                                     <Link className="btn btn-primary ml-2" to="/catalog">В каталог</Link>
                                 </div>
                             </h4>

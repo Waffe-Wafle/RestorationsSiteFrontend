@@ -9,17 +9,10 @@
   border-color: #fff; /* Цвет рамки также делаем белым */
 }
 
-.nav-link {
-  color: white !important;
-}
 
 .table td,
 .table th {
   vertical-align: middle !important;
-}
-
-.nav-link:hover {
-  color: #ffc0cb !important; /* Изменение цвета при наведении */
 }
 
 .breadcrumb {
@@ -115,6 +108,16 @@
     border-bottom-right-radius: 2px !important;
   }
 }
+
+/* Для изменения цвета текста выпадающего списка */
+.dropdown-toggle, .nav-link:hover {
+  color: black;
+}
+
+.nav-link {
+  padding: 0;
+}
+
 
 //.form-control:focus {
 //  color: #495057;

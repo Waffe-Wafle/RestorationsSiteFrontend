@@ -36,7 +36,7 @@ const BasketDonationCard: FC<BasketCardProps> = ({ donation, manageBasket }) => 
                     <td className="border-right">{workDonation.percent}</td>
                     <td className="border-right">
                         <div className="d-flex justify-content-center">
-                            <Button className="mt-2 mr-2" onClick={() => manageBasket(workDonation, true)} variant="danger">
+                            <Button className="mt-2 mr-2" onClick={() => manageBasket(workDonation, true)} variant="success">
                                 Изменить
                             </Button>
                             <Button className="mt-2 ml-2" onClick={() => manageBasket(workDonation, false)} variant="danger">

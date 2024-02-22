@@ -6,6 +6,8 @@ import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
 import Basket from "./components/pages/Basket";
 import Payments from "./components/pages/Payments";
+import RedactRestoration from "./components/pages/RedactRestoration";
+import RequestsManaging from "./components/pages/RequestsManaging";
 import Info from "./components/pages/Info";
 
 
@@ -25,6 +27,10 @@ const App = () => {
 
                     <Route exact path="/basket"         element={<Basket/>}/>
                     <Route exact path='/my_payments'    element={<Payments/>}/>
+
+                    <Route exact path='/new_restoration'       element={<RedactRestoration/>}/>
+                    <Route exact path='/update_restoration/:restore_id' element={<RedactRestoration/>}/>
+                    <Route exact path='/manage'         element={<RequestsManaging/>}/>
 
                     <Route exact path="/info"           element={<Info/>}/>
                 </Routes>

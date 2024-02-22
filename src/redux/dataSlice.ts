@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit"
 import {useSelector} from "react-redux";
 import {RootState} from "./store"; // Wow, there is no recursion :)
-import {RestorationType, PaymentType, DonationType } from "../interfaces";
+import {RestorationType, PaymentType, DonationType, StoredRestorationType} from "../interfaces";
 import {paymentStatusMap} from "../hooks_and_utils/statuses";
 
 
@@ -13,13 +13,15 @@ const dataSlice = createSlice({
         isStaff: false,
 
         // Organised like that to allow to append by one new:
-        restorations: {} as {[id: number]: RestorationType},  // Restore objects stored there
+        restorations: {} as {[id: number]: RestorationType},
+        // To connect Restoration and Works api and elso during redirect from restoration to constructor:
+        currentRestoration: {} as StoredRestorationType | RestorationType,
+        lastRestorationId: null,                              // Used to redirect back if there was restoration reduction before
         basket: {}       as PaymentType,                      // Here stored draft object
         payments: {}     as {[id: number]: PaymentType},      // There are stored payments objects which contain
 
         searchValue: '',         // To save text in header
         draftId: null,           // Used to get draft
-        currentRestoration: {},  // Used during some redirects
         refreshView: false,
     },
     reducers: {
@@ -38,7 +40,14 @@ const dataSlice = createSlice({
                     state.restorations[restore.id] = restore;
                 })
             }
-        }, // Adding methods will be added
+        },
+        addRestoration(state, {payload}) {
+            state.restorations = {...state.restorations, [payload.id]: payload};
+        },
+        deleteRestorationById(state, {payload}) {
+            const {[payload]: value, ...newRestorations} = state.restorations;
+            state.restorations = newRestorations;
+        }, // Not really used because of filtering
 
 
         storeBasket(state, {payload}) {
@@ -73,8 +82,16 @@ const dataSlice = createSlice({
         },
 
 
-        storeRefreshView(state, {payload}){
+        storeRefreshView(state, {payload}) {
             state.refreshView = payload;
+        },
+
+        storeCurrentRestoration(state, {payload}) {
+            state.currentRestoration = payload;
+        },
+
+        storeLastRestorationId(state, {payload}) {
+            state.lastRestorationId = payload
         },
 
     }
@@ -89,7 +106,6 @@ export const useIsStaff = () =>
 
 export const useRestorations = () =>
     useSelector((state: RootState) => state.data.restorations);
-
 
 export const useBasket = () =>
     useSelector((state: RootState) => state.data.basket);
@@ -126,12 +142,20 @@ export const useDraftId = () =>
 export const useRefreshView= () =>
     useSelector((state: RootState) => state.data.refreshView);
 
+export const useCurrentRestoration= () =>
+    useSelector((state: RootState) => state.data.currentRestoration);
+
+export const useLastRestorationId = () =>
+    useSelector((state: RootState) => state.data.lastRestorationId);
+
 
 export const {
     storeIsAuthenticated,
     storeIsStaff,
 
     storeRestorations,
+    addRestoration,
+    deleteRestorationById,
 
     storeBasket,
 
@@ -143,7 +167,10 @@ export const {
 
     storeDraftId,
 
-    storeRefreshView
+    storeRefreshView,
+
+    storeCurrentRestoration,
+    storeLastRestorationId
 
 } = dataSlice.actions
 
