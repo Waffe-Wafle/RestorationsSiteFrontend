@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/RestorationsSiteFrontend/static/css/main.646fa229.css",
-    "main.js": "/RestorationsSiteFrontend/static/js/main.85c8db28.js",
+    "main.js": "/RestorationsSiteFrontend/static/js/main.0ae0ef8b.js",
     "index.html": "/RestorationsSiteFrontend/index.html",
     "main.646fa229.css.map": "/RestorationsSiteFrontend/static/css/main.646fa229.css.map",
-    "main.85c8db28.js.map": "/RestorationsSiteFrontend/static/js/main.85c8db28.js.map"
+    "main.0ae0ef8b.js.map": "/RestorationsSiteFrontend/static/js/main.0ae0ef8b.js.map"
   },
   "entrypoints": [
     "static/css/main.646fa229.css",
-    "static/js/main.85c8db28.js"
+    "static/js/main.0ae0ef8b.js"
   ]
 }
