@@ -4,7 +4,7 @@
   "icons": [
     {
       "src": "favicon.svg",
-      "type": "image/svg+xml", "sizes": ["512x512"]
+      "type": "image/svg+xml", "sizes": ["512x512", "256x256", "128x128", "64x64", "32x32"]
     }
   ]
 }
